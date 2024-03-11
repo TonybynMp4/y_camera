@@ -17,9 +17,9 @@ body {
 #photo-container {
 	display: none;
 	position: absolute;
-	width: 35vw;
+	width: 50vw;
 	top: 10vh;
-	left: 33.5vw;
+	left: 23.5vw;
 	padding: 0.75vw;
 	align-items: center;
 	background-color: whitesmoke;
