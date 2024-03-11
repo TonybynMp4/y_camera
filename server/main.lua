@@ -1,4 +1,4 @@
-local printf = lib.print.info
+lib.versionCheck('TonybynMp4/qbx_camera')
 
 exports.qbx_core:CreateUseableItem('camera', function(source)
     TriggerClientEvent('qbx_camera:client:openCamera', source)
