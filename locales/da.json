@@ -1,0 +1,19 @@
+{
+    "help": {
+        "exit": "Forlad kamera indstillinger",
+        "take": "Tag billede"
+    },
+    "input": {
+        "title": "Rediger billede",
+        "photoTitle": "Titel",
+        "description": "Beskrivelse"
+    },
+    "error": {
+        "takePicture": "Der opstod en fejl, prøv igen",
+        "edit": "Foto redigeret"
+    },
+    "success": {
+        "edit": "Der opstod en fejl under redigeringen",
+        "copied": "URL kopiereret til klippeværktøj"
+    }
+}
