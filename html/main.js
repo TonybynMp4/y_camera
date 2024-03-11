@@ -20,6 +20,7 @@ function updateZoom(zoom) {
 }
 
 function closePhoto(_) {
+    if (cameraLoop) return;
     fetch(`https://${GetParentResourceName()}/closePhoto`, {
         method: 'POST'
     });
