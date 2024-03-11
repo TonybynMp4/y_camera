@@ -1,0 +1,136 @@
+@font-face {
+	font-family: 'Oxygen';
+	src: url("Oxygen-Regular.ttf");
+}
+
+@font-face {
+	font-family: 'Oxygen-Bold';
+	src: url(Oxygen-Bold.ttf);
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: none;
+}
+
+#photo-container {
+	display: none;
+	position: absolute;
+	width: 35vw;
+	top: 10vh;
+	left: 33.5vw;
+	padding: 0.75vw;
+	align-items: center;
+	background-color: whitesmoke;
+	flex-direction: column;
+	font-family: 'Oxygen', sans-serif;
+}
+
+#photo-container div {
+	position: unset;
+	text-align: center;
+}
+
+#image {
+	width: 100%;
+}
+
+#camera-overlay {
+	display: none;
+	color: #fff;
+	font-family: 'Oxygen-Bold', sans-serif;
+}
+
+#top-left,
+#top-right,
+#bottom-left,
+#bottom-right {
+	position: absolute;
+	width: 2.5vw;
+	height: 2.5vw;
+	border: 5px solid #fff;
+}
+
+#top-left,
+#top-right {
+	top: 1.5vh;
+	border-bottom: none;
+}
+
+#top-left {
+	left: 1.5vw;
+	border-right: none;
+}
+
+#top-right {
+	right: 1.5vw;
+	border-left: none;
+}
+
+#bottom-left,
+#bottom-right {
+	bottom: 1.5vh;
+	border-top: none;
+}
+
+#bottom-left {
+	left: 1.5vw;
+	border-right: none;
+}
+
+#bottom-right {
+	right: 1.5vw;
+	border-left: none;
+}
+
+#zoom {
+	position: absolute;
+	bottom: 2.5vh;
+	right: 5vw;
+	font-size: 1.25em;
+}
+
+#time {
+	font-size: 1.5em;
+	position: absolute;
+	top: 2.5vh;
+	right: 5vw;
+}
+
+#recording {
+	position: absolute;
+	display: flex;
+	top: 2vh;
+	left: calc(50% - 3.75vw);
+	width: 7.5vw;
+	align-items: center;
+	justify-content: center;
+}
+
+#rec {
+	margin-right: 5px;
+	font-size: 1.25em;
+}
+
+#record-indicator {
+	width: 10px;
+	height: 10px;
+	background-color: red;
+	border-radius: 50%;
+	animation: blink 3s infinite;
+}
+
+@keyframes blink {
+	0% {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}

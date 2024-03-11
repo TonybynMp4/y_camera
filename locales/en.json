@@ -1,0 +1,19 @@
+{
+    "help": {
+        "exit": "Exit Camera Mode",
+        "take": "Take Picture"
+    },
+    "input": {
+        "title": "Edit Photo",
+        "photoTitle": "Title",
+        "description": "Description"
+    },
+    "error": {
+        "takePicture": "You did not take a picture",
+        "edit": "Photo edited"
+    },
+    "success": {
+        "edit": "Failed to edit photo",
+        "copied": "URL copied to clipboard"
+    }
+}
