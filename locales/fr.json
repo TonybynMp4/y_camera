@@ -1,0 +1,19 @@
+{
+    "help": {
+        "exit": "Eteindre l'appareil photo",
+        "take": "Prendre une photo"
+    },
+    "input": {
+        "title": "Modifier la photo",
+        "photoTitle": "Titre de la photo",
+        "description": "Description"
+    },
+    "error": {
+        "takePicture": "Impossible de prendre une photo",
+        "edit": "Impossible de modifier la photo"
+    },
+    "success": {
+        "edit": "Photo modifiée",
+        "copied": "URL copiée"
+    }
+}
