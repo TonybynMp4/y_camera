@@ -1,11 +1,14 @@
 # qbx_camera
 A camera script for the Qbox Framework using [fivemanage](https://www.fivemanage.com/).
 
+![image](https://github.com/TonybynMp4/qbx_camera/assets/97451137/32144d9e-9a69-4b48-8894-6fa647464b74)
+![image](https://github.com/TonybynMp4/qbx_camera/assets/97451137/2340c391-c58c-4ec4-ae6b-95ce210a6bd2)
+
 ## Dependencies
 
 - [qbx_core](https://github.com/qbox-project/qbx_core/releases/latest)
 - [ox_lib](https://github.com/overextended/ox_lib)
-- [ox_inventory](https://github.com/overextended/ox_inventory) (Used in gun related alerts to get the name of the weapon)
+- [ox_inventory](https://github.com/overextended/ox_inventory)
 - [fmsdk](https://github.com/fivemanage/sdk/releases/latest) (Fivemanage)
 
 ## Installation
