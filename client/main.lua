@@ -1,15 +1,16 @@
 local cam
 local inCam = false
 local cameraProp
-local FOV_MAX = 80.0
-local FOV_MIN = 7.5
+local FOV_MAX = 79.5
+local FOV_MIN = 7.6
 local ZOOM_SPEED = 10.0
-local fov = (FOV_MAX + FOV_MIN) * 0.5
+local DEFAULT_FOV = (FOV_MAX + FOV_MIN) * 0.5
+local fov = DEFAULT_FOV
 local pitch = 0.0
 
 local function helpText()
     SetTextComponentFormat("STRING")
-    AddTextComponentString(locale('help.exit')..': ~INPUT_CELLPHONE_CANCEL~\n'..locale('help.take')..': ~INPUT_CELLPHONE_SELECT~');
+    AddTextComponentString(locale('help.exit')..': ~INPUT_CELLPHONE_CANCEL~\n'..locale('help.take')..': ~INPUT_CELLPHONE_SELECT~')
     DisplayHelpTextFromStringLabel(0, false, true, 1)
 end
 
@@ -25,7 +26,7 @@ local function takePicture()
     end
 end
 
-local function HandleZoom()
+local function handleZoom()
     if IsControlJustPressed(0, 241) then
         fov = math.max(fov - ZOOM_SPEED, FOV_MIN)
     end
@@ -55,6 +56,7 @@ local function resetCamera()
     DisplayHud(true)
     DisplayRadar(true)
     ClearTimecycleModifier()
+    fov = DEFAULT_FOV
 end
 
 local function handleCameraControls()
@@ -68,8 +70,8 @@ end
 
 local function openCamera()
     SetNuiFocus(false, false)
-    DisplayHud(false);
-    DisplayRadar(false);
+    DisplayHud(false)
+    DisplayRadar(false)
     inCam = true
     SetTimecycleModifier("default")
     lib.requestAnimDict("amb@world_human_paparazzi@male@base", 1500)
@@ -77,8 +79,8 @@ local function openCamera()
 
     local coords = GetEntityCoords(cache.ped)
     cameraProp = CreateObject(`prop_pap_camera_01`, coords.x, coords.y, coords.z + 0.2, true, true, true)
-
     AttachEntityToEntity(cameraProp, cache.ped, GetPedBoneIndex(cache.ped, 28422), 0, 0, 0, 0, 0, 0, true, false, false, false, 2, true)
+
     cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
     AttachCamToEntity(cam, cameraProp, 0.075, -0.30, 0, true)
     SetCamRot(cam, 0.0, 0.0, GetEntityHeading(cameraProp) / 360, 2)
@@ -92,13 +94,24 @@ local function openCamera()
 
     CreateThread(function()
         while inCam do
+            local zoom = math.floor(((1/fov) * DEFAULT_FOV) * 100) / 100
+            SendNUIMessage({
+                message = 'updateZoom',
+                zoom = qbx.math.round(zoom, 2)
+            })
+            Wait(1000)
+        end
+    end)
+
+    CreateThread(function()
+        while inCam do
             if IsEntityDead(cache.ped) then
                 resetCamera()
                 break
             end
             helpText()
             handleCameraControls()
-            HandleZoom()
+            handleZoom()
             if IsControlJustPressed(1, 176) or IsControlJustPressed(1, 24) then
                 inCam = false
                 qbx.playAudio({

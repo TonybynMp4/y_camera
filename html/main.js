@@ -8,11 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
             cameraOverlay(event.data.toggle);
         } else if (event.data.message == 'photo') {
             togglePhoto(event.data);
+        } else if (event.data.message == 'updateZoom') {
+            updateZoom(event.data.zoom);
         }
     });
 });
 
-function closePhoto(event) {
+function updateZoom(zoom) {
+    const zoomElement = document.getElementById('zoom');
+    zoomElement.textContent = `${zoom}X ZOOM`;
+}
+
+function closePhoto(_) {
     fetch(`https://${GetParentResourceName()}/closePhoto`, {
         method: 'POST'
     });
