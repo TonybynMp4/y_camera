@@ -7,6 +7,7 @@ local ZOOM_SPEED = 10.0
 local DEFAULT_FOV = (FOV_MAX + FOV_MIN) * 0.5
 local fov = DEFAULT_FOV
 local pitch = 0.0
+local heading
 
 local function helpText()
     SetTextComponentFormat("STRING")
@@ -53,6 +54,7 @@ local function resetCamera()
     DeleteObject(cameraProp)
     cameraProp = nil
     ClearPedTasks(cache.ped)
+    TriggerEvent("qbx_hud:client:showHud")
     DisplayHud(true)
     DisplayRadar(true)
     ClearTimecycleModifier()
@@ -61,8 +63,13 @@ end
 
 local function handleCameraControls()
     local multiplier = fov / 50
-    local heading = GetEntityHeading(cache.ped) + (0 - GetControlNormal(2, 1) * (5 * multiplier))
-    SetEntityHeading(cache.ped, heading)
+    if not cache.vehicle then
+        heading = GetEntityHeading(cache.ped) + (0 - GetControlNormal(2, 1) * (5 * multiplier))
+        SetEntityHeading(cache.ped, heading)
+    else
+        if not heading then heading = GetEntityHeading(cache.vehicle) end
+        heading += (0 - GetControlNormal(2, 1) * (5 * multiplier))
+    end
     pitch += (0 - GetControlNormal(2, 2) * (5 * multiplier))
     pitch = math.clamp(pitch, -90.0, 90.0)
     SetCamRot(cam, pitch, 0.0, heading, 2)
@@ -72,17 +79,26 @@ local function openCamera()
     SetNuiFocus(false, false)
     DisplayHud(false)
     DisplayRadar(false)
+    TriggerEvent("qbx_hud:client:hideHud")
     inCam = true
     SetTimecycleModifier("default")
     lib.requestAnimDict("amb@world_human_paparazzi@male@base", 1500)
     TaskPlayAnim(cache.ped, "amb@world_human_paparazzi@male@base", "base", 2.0, 2.0, -1, 51, 1, false, false, false)
 
     local coords = GetEntityCoords(cache.ped)
-    cameraProp = CreateObject(`prop_pap_camera_01`, coords.x, coords.y, coords.z + 0.2, true, true, true)
-    AttachEntityToEntity(cameraProp, cache.ped, GetPedBoneIndex(cache.ped, 28422), 0, 0, 0, 0, 0, 0, true, false, false, false, 2, true)
+    if not cache.vehicle then
+        cameraProp = CreateObject(`prop_pap_camera_01`, coords.x, coords.y, coords.z + 0.2, true, true, true)
+        AttachEntityToEntity(cameraProp, cache.ped, GetPedBoneIndex(cache.ped, 28422), 0, 0, 0, 0, 0, 0, true, false, false, false, 2, true)
+    end
 
     cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
-    AttachCamToEntity(cam, cameraProp, 0.075, -0.30, 0, true)
+
+    if cache.vehicle then
+        AttachCamToEntity(cam, cache.ped, 0, 0, 0.65, true)
+    else
+        AttachCamToEntity(cam, cameraProp, 0.075, -0.30, 0.0, true)
+    end
+
     SetCamRot(cam, 0.0, 0.0, GetEntityHeading(cameraProp) / 360, 2)
     SetCamFov(cam, fov)
     RenderScriptCams(true, false, 0, true, false)
@@ -128,6 +144,16 @@ local function openCamera()
         end
     end)
 end
+
+lib.onCache('vehicle', function(value)
+    if inCam then
+        if value then
+            AttachCamToEntity(cam, cache.ped, 0, 0, 0.65, true)
+        else
+            AttachCamToEntity(cam, cameraProp, 0.075, -0.30, 0.0, true)
+        end
+    end
+end)
 
 RegisterNetEvent('qbx_camera:client:openCamera', function()
     if inCam then return end
