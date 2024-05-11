@@ -1,8 +1,8 @@
-# qbx_camera
+# y_camera
 A camera script for the Qbox Framework using [fivemanage](https://www.fivemanage.com/).
 
-![image](https://github.com/TonybynMp4/qbx_camera/assets/97451137/32144d9e-9a69-4b48-8894-6fa647464b74)
-![image](https://github.com/TonybynMp4/qbx_camera/assets/97451137/2340c391-c58c-4ec4-ae6b-95ce210a6bd2)
+![image](https://github.com/TonybynMp4/y_camera/assets/97451137/32144d9e-9a69-4b48-8894-6fa647464b74)
+![image](https://github.com/TonybynMp4/y_camera/assets/97451137/2340c391-c58c-4ec4-ae6b-95ce210a6bd2)
 
 ## Dependencies
 
@@ -13,7 +13,7 @@ A camera script for the Qbox Framework using [fivemanage](https://www.fivemanage
 
 ## Installation
 1. Download the script and put it in your resources folder.
-2. Add `ensure qbx_camera` to your server.cfg
+2. Add `ensure y_camera` to your server.cfg
 3. Add the following items to ox_inventory
 
 
@@ -35,13 +35,13 @@ A camera script for the Qbox Framework using [fivemanage](https://www.fivemanage
         {
             label = 'Edit',
             action = function(slot)
-                exports.qbx_camera:EditPicture(slot)
+                exports.y_camera:EditPicture(slot)
             end
         },
         {
             label = 'Get Link',
             action = function(slot)
-                exports.qbx_camera:CopyURL(slot)
+                exports.y_camera:CopyURL(slot)
             end
         }
     },

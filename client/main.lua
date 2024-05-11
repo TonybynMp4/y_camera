@@ -21,7 +21,7 @@ local function takePicture()
         toggle = false
     })
     Wait(10)
-    local tookPic = lib.callback.await('qbx_camera:server:takePicture', false)
+    local tookPic = lib.callback.await('y_camera:server:takePicture', false)
     if not tookPic then
         exports.qbx_core:Notify(locale('error.takePicture'), 'error')
     end
@@ -155,12 +155,12 @@ lib.onCache('vehicle', function(value)
     end
 end)
 
-RegisterNetEvent('qbx_camera:client:openCamera', function()
+RegisterNetEvent('y_camera:client:openCamera', function()
     if inCam then return end
     openCamera()
 end)
 
-RegisterNetEvent('qbx_camera:client:openPhoto', function(source, data)
+RegisterNetEvent('y_camera:client:openPhoto', function(source, data)
     SendNUIMessage({
         message = 'photo',
         toggle = true,
@@ -190,7 +190,7 @@ local function editPicture(slot)
     })
 
     if not input then return end
-    if lib.callback.await('qbx_camera:server:editItem', false, slot, input) then
+    if lib.callback.await('y_camera:server:editItem', false, slot, input) then
         exports.qbx_core:Notify(locale('success.edited'), 'success')
     else
         exports.qbx_core:Notify(locale('error.edit'), 'error')
