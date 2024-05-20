@@ -160,11 +160,13 @@ RegisterNetEvent('y_camera:client:openCamera', function()
     openCamera()
 end)
 
-RegisterNetEvent('y_camera:client:openPhoto', function(source, data)
+RegisterNetEvent('y_camera:client:openPhoto', function(data)
+    if not data or not data.url then return end
+
     SendNUIMessage({
         message = 'photo',
         toggle = true,
-        source = source,
+        source = data.url,
         title = data.title,
         subText = data.description
     })
@@ -209,3 +211,21 @@ local function copyURL(slot)
     end
 end
 exports('CopyURL', copyURL)
+
+local function showPicture(slot)
+    local players = lib.getNearbyPlayers(GetEntityCoords(cache.ped), 5, false)
+    if not players then return end
+    for i = 1, #players do
+        players[i].id = GetPlayerServerId(players[i].id)
+    end
+
+    local slotData = exports.ox_inventory:GetPlayerItems()[slot]
+    local data = {
+        url = slotData.metadata.source,
+        title = slotData.metadata.title,
+        description = slotData.metadata.description,
+        sourceCoords = GetEntityCoords(cache.ped)
+    }
+    TriggerServerEvent('y_camera:server:showPicture', players, data)
+end
+exports('ShowPicture', showPicture)

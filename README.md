@@ -33,6 +33,13 @@ A camera script for the Qbox Framework using [fivemanage](https://www.fivemanage
     close = true,
     buttons = {
         {
+            label = 'Show',
+            action = function(slot)
+                exports.y_camera:ShowPicture(slot)
+                client.closeInventory()
+            end
+        },
+        {
             label = 'Edit',
             action = function(slot)
                 exports.y_camera:EditPicture(slot)
