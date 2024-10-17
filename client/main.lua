@@ -97,11 +97,11 @@ local function openCamera()
     LocalPlayer.state:set('invBusy', true)
 
     SetTimecycleModifier("default")
-    lib.requestAnimDict("amb@world_human_paparazzi@male@base", 1500)
-    TaskPlayAnim(cache.ped, "amb@world_human_paparazzi@male@base", "base", 2.0, 2.0, -1, 51, 1, false, false, false)
 
     local coords = GetEntityCoords(cache.ped)
     if not cache.vehicle then
+        lib.requestAnimDict("amb@world_human_paparazzi@male@base", 1500)
+        TaskPlayAnim(cache.ped, "amb@world_human_paparazzi@male@base", "base", 2.0, 2.0, -1, 51, 1, false, false, false)
         cameraProp = CreateObject(`prop_pap_camera_01`, coords.x, coords.y, coords.z + 0.2, true, true, true)
         AttachEntityToEntity(cameraProp, cache.ped, GetPedBoneIndex(cache.ped, 28422), 0, 0, 0, 0, 0, 0, true, false, false, false, 2, true)
     end
