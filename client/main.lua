@@ -81,6 +81,12 @@ local function handleCameraControls()
     SetCamRot(cam, pitch, 0.0, heading, 2)
 end
 
+local function disableControls()
+    DisablePlayerFiring(cache.playerId, true)
+    DisableControlAction(0, 25, true)
+    DisableControlAction(0, 44, true)
+end
+
 local function openCamera()
     SetNuiFocus(false, false)
     DisplayHud(false)
@@ -132,6 +138,7 @@ local function openCamera()
                 break
             end
             helpText()
+            disableControls()
             handleCameraControls()
             handleZoom()
             if IsControlJustPressed(1, 176) or IsControlJustPressed(1, 24) then
