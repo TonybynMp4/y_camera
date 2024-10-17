@@ -64,6 +64,7 @@ local function resetCamera()
     DisplayHud(true)
     DisplayRadar(true)
     ClearTimecycleModifier()
+    LocalPlayer.state:set('invBusy', false)
     fov = DEFAULT_FOV
 end
 
@@ -93,6 +94,8 @@ local function openCamera()
     DisplayRadar(false)
     TriggerEvent("qbx_hud:client:hideHud")
     inCam = true
+    LocalPlayer.state:set('invBusy', true)
+
     SetTimecycleModifier("default")
     lib.requestAnimDict("amb@world_human_paparazzi@male@base", 1500)
     TaskPlayAnim(cache.ped, "amb@world_human_paparazzi@male@base", "base", 2.0, 2.0, -1, 51, 1, false, false, false)
