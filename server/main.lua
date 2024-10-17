@@ -43,6 +43,7 @@ lib.callback.register('y_camera:server:editItem', function(source, slot, input)
     if not slotData then return false end
     slotData.metadata.title = input[1]
     slotData.metadata.description = input[2]
+    slotData.metadata.label = input[1]
 
     exports.ox_inventory:SetMetadata(source, slot, slotData.metadata)
     return true
