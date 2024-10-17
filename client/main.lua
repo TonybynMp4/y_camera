@@ -20,11 +20,17 @@ local function takePicture()
         message = 'camera',
         toggle = false
     })
-    Wait(10)
-    local tookPic = lib.callback.await('y_camera:server:takePicture', false)
-    if not tookPic then
-        exports.qbx_core:Notify(locale('error.takePicture'), 'error')
-    end
+    Wait(200)
+    lib.callback('y_camera:server:takePicture', false, function(tookPic)
+        if not tookPic then
+            exports.qbx_core:Notify(locale('error.takePicture'), 'error')
+        end
+    end)
+    Wait(200)
+    SendNUIMessage({
+        message = 'camera',
+        toggle = true
+    })
 end
 
 local function handleZoom()
@@ -129,14 +135,12 @@ local function openCamera()
             handleCameraControls()
             handleZoom()
             if IsControlJustPressed(1, 176) or IsControlJustPressed(1, 24) then
-                inCam = false
                 qbx.playAudio({
                     audioName = 'Camera_Shoot',
                     audioRef = 'Phone_Soundset_Franklin',
                     source = cameraProp
                 })
                 takePicture()
-                resetCamera()
             elseif IsControlJustPressed(1, 194) then
                 resetCamera()
             end
