@@ -201,8 +201,8 @@ local function editPicture(slot)
     if not slotData then return end
 
     local input = lib.inputDialog(locale('input.title'), {
-        {type = 'input', label = locale('input.photoTitle'), required = false, min = 0, max = 32, value = slotData.metadata.title or ''},
-        {type = 'input', label = locale('input.description'), required = false, min = 0, max = 128, value = slotData.metadata.description or ''}
+        {type = 'input', label = locale('input.photoTitle'), required = false, min = 0, max = 32, default = slotData.metadata.title or ''},
+        {type = 'input', label = locale('input.description'), required = false, min = 0, max = 128, default = slotData.metadata.description or ''}
     })
 
     if not input then return end
