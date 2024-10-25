@@ -1,4 +1,5 @@
 lib.versionCheck('TonybynMp4/y_camera')
+local config = require('config.server')
 
 local function showPhoto(source, data)
     if not source or source == -1 or source <= 0 then return end
@@ -31,9 +32,35 @@ lib.callback.register('y_camera:server:takePicture', function(source)
     if not source or source == -1 or source <= 0 then return false end
     local imageData = exports.fmsdk:takeServerImage(source)
     if imageData then
-        givePicture(source, imageData)
-        return true
+        local cameraSlots = exports.ox_inventory:GetSlotsWithItem(source, 'camera')
+        if not cameraSlots then return false end
+
+        for i in #cameraSlots do
+            local slot = cameraSlots[i]
+            local photos = slot.metadata.photos or {}
+            if #photos < config.maxCameraSlots then
+                if not slot.metadata.photos then slot.metadata.photos = {} end
+                slot.metadata.photos[#slot.metadata.photos + 1] = {
+                    url = imageData.url
+                }
+
+                slot.metadata.photos = photos
+                exports.ox_inventory:SetMetadata(source, slot.slot, slot.metadata)
+                return true
+            end
+        end
     end
+    return false
+end)
+
+lib.callback.register('y_camera:server:printPhoto', function(source, url)
+    if not source or source == -1 or source <= 0 then return false end
+
+    if not url or type(url) ~= "string" then return false end
+    -- Only allow images from the fivemanage server (security goes brrrr i guess?)
+    if string.sub(url, 1, 32) ~= 'https://r2.fivemanage.com/images' then return false end
+    givePicture(source, {url = url})
+
     return false
 end)
 
@@ -46,6 +73,23 @@ lib.callback.register('y_camera:server:editItem', function(source, slot, input)
     slotData.metadata.label = input[1]
 
     exports.ox_inventory:SetMetadata(source, slot, slotData.metadata)
+    return true
+end)
+
+lib.callback.register('y_camera:server:deletePhotoFromCamera', function(source, cameraSlot, photoIndex, url)
+    if not source or source == -1 or source <= 0 then return false end
+    local items = exports.ox_inventory:GetPlayerItems(source)
+    local slotData = items[cameraSlot]
+
+    if not slotData or not slotData.metadata or not slotData.metadata.photos then return false end
+
+    local photoData = slotData.metadata.photos[photoIndex]
+    if not photoData or photoData.url ~= url then return false end
+
+    slotData.metadata.photos[photoIndex] = nil
+
+    exports.ox_inventory:SetMetadata(source, cameraSlot, slotData.metadata)
+
     return true
 end)
 
