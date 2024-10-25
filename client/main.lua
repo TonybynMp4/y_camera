@@ -243,3 +243,18 @@ local function showPicture(slot)
     TriggerServerEvent('y_camera:server:showPicture', players, data)
 end
 exports('ShowPicture', showPicture)
+
+local function showScreen(slot)
+    lib.print.info(slot) -- just the slot number?
+    local slotData = exports.ox_inventory:GetPlayerItems()[slot]
+    if not slotData then return end
+
+    SendNUIMessage({
+        message = 'toggleScreen',
+        toggle = true,
+        photos = slotData.metadata.photos,
+        slot = slot
+    })
+    SetNuiFocus(true, true)
+end
+exports('showScreen', showScreen)
