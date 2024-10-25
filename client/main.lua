@@ -187,11 +187,38 @@ RegisterNetEvent('y_camera:client:openPhoto', function(data)
     SetNuiFocus(true, true)
 end)
 
-RegisterNUICallback('closePhoto', function()
+RegisterNUICallback('closePhoto', function(_, cb)
     SetNuiFocus(false, false)
     SendNUIMessage({
         message = 'photo',
         toggle = false
+    })
+    cb({})
+end)
+
+RegisterNUICallback('closeScreen', function(_, cb)
+    SetNuiFocus(false, false)
+    cb({})
+end)
+
+RegisterNUICallback('copyUrl', function(data, cb)
+    lib.setClipboard(data.url)
+    cb({
+        message = locale('success.copied')
+    })
+end)
+
+RegisterNUICallback('printPhoto', function(data, cb)
+    local success = lib.callback('y_camera:server:printPhoto', false, data.url)
+    cb({
+        success = success
+    })
+end)
+
+RegisterNUICallback('deletePhoto', function(d, cb)
+    local success = lib.callback('y_camera:server:deletePhotoFromCamera', false, d.cameraSlot, d.photoIndex, d.url)
+    cb({
+        success = success
     })
 end)
 
