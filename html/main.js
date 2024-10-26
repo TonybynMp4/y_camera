@@ -143,6 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             if (action === 'set') {
+                if (index < 0 || index - 1 > this.Images.length) {
+                    console.error('Index out of bounds', index);
+                    index = 0;
+                }
+
+                this.CurrentImage = index;
                 this.setImage(this.Images[index].url);
                 this.Counter.innerHTML = `${this.CurrentImage + 1} / ${this.Images.length}`;
                 return;
@@ -246,22 +252,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('delete').addEventListener('click', async () => {
         if (Screen.Images.length === 0) return;
-        if (Screen.CameraSlot === null) return;
+        if (!Screen.CameraSlot) return;
         const shouldDelete = await validationModal();
         if (!shouldDelete) return;
 
         fetch(`https://${GetParentResourceName()}/deletePhoto`, {
             method: 'POST',
-            body: JSON.stringify({ cameraSlot: Screen.CameraSlot, photoIndex: Screen.CurrentImage, url: Screen.Images[Screen.CurrentImage] }),
+            body: JSON.stringify({
+                cameraSlot: Screen.CameraSlot,
+                photoIndex: Screen.CurrentImage + 1,
+                url: Screen.Images[Screen.CurrentImage].url
+            }),
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then((success) => {
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(({success}) => {
             if (!success) return;
 
             Screen.Images = Screen.Images.filter((_, index) => index !== Screen.CurrentImage);
             toast('Photo deleted!');
-            Screen.changePhoto('set', Screen.CurrentImage);
+
+            Screen.changePhoto('set', Math.max(0, Screen.CurrentImage - 1));
+        }).catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
         });
     });
 
