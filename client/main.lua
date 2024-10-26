@@ -209,14 +209,14 @@ RegisterNUICallback('copyUrl', function(data, cb)
 end)
 
 RegisterNUICallback('printPhoto', function(data, cb)
-    local success = lib.callback('y_camera:server:printPhoto', false, data.url)
+    local success = lib.callback.await('y_camera:server:printPhoto', false, data.url)
     cb({
         success = success
     })
 end)
 
 RegisterNUICallback('deletePhoto', function(d, cb)
-    local success = lib.callback('y_camera:server:deletePhotoFromCamera', false, d.cameraSlot, d.photoIndex, d.url)
+    local success = lib.callback.await('y_camera:server:deletePhotoFromCamera', false, d.cameraSlot, d.photoIndex, d.url)
     cb({
         success = success
     })
