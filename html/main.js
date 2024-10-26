@@ -124,24 +124,26 @@ document.addEventListener('DOMContentLoaded', () => {
         Images: [],
         CameraSlot: null,
 
-        // action: 'next' | 'previous' | 'set', index: number
+        setImage: function (url) {
+            this.Image.src = url || './assets/placeholder.svg';
+        },
         changePhoto: function (action, index) {
-            if (this.Images.length == 0) {
-                this.Image.src = './assets/placeholder.svg';
+            if (this.Images.length === 0) {
+                this.setImage(null);
                 this.Counter.innerHTML = `0 / 0`;
                 this.CurrentImage = 0;
                 return;
             }
 
-            if (this.Images.length == 1) {
-                this.Image.src = this.Images[0];
+            if (this.Images.length === 1) {
+                this.setImage(this.Images[0].url);
                 this.Counter.innerHTML = `1 / 1`;
                 this.CurrentImage = 0;
                 return;
             }
 
             if (action === 'set') {
-                this.Image.src = this.Images[this.CurrentImage];
+                this.setImage(this.Images[index].url);
                 this.Counter.innerHTML = `${this.CurrentImage + 1} / ${this.Images.length}`;
                 return;
             }
@@ -153,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.CurrentImage = 0;
                 }
 
-                this.Image.src = this.Images[this.CurrentImage];
+                this.setImage(this.Images[this.CurrentImage].url);
                 this.Counter.innerHTML = `${this.CurrentImage + 1} / ${this.Images.length}`;
 
                 return;
@@ -166,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     this.CurrentImage = this.Images.length - 1;
                 }
 
-                this.Image.src = this.Images[this.CurrentImage];
+                this.setImage(this.Images[this.CurrentImage].url);
                 this.Counter.innerHTML = `${this.CurrentImage + 1} / ${this.Images.length}`;
 
                 return;
@@ -192,8 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 this.Container.style.visibility = 'visible';
                 this.Images = photos;
                 this.CameraSlot = cameraSlot;
-                this.Image.src = this.Images[0];
-                this.Counter.innerHTML = `1 / ${this.Images.length}`;
+                this.changePhoto('set', 0);
                 return;
             }
         }
