@@ -10,7 +10,8 @@
     },
     "error": {
         "takePicture": "Impossible de prendre une photo",
-        "edit": "Impossible de modifier la photo"
+        "edit": "Impossible de modifier la photo",
+        "cameraFull": "La mémoire de l'appareil photo est pleine, veuillez supprimer des photos!"
     },
     "success": {
         "edit": "Photo modifiée",

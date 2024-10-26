@@ -1,21 +1,25 @@
 @font-face {
 	font-family: 'Oxygen';
-	src: url("Oxygen-Regular.ttf");
+	src: url("assets/Oxygen-Regular.ttf");
 }
 
 @font-face {
 	font-family: 'Oxygen-Bold';
-	src: url(Oxygen-Bold.ttf);
+	src: url("assets/Oxygen-Bold.ttf");
 }
 
 body {
+    --button-background: rgb(28, 32, 39);
+    --button-color: #fff;
+    --button-hover: rgb(14, 16, 20);
 	margin: 0;
 	padding: 0;
 	background-color: none;
 }
 
 #photo-container {
-	display: none;
+    visibility: hidden;
+    display: flex;
 	position: absolute;
 	width: 50vw;
 	top: 10vh;
@@ -37,7 +41,8 @@ body {
 }
 
 #camera-overlay {
-	display: none;
+    visibility: hidden;
+	display: block;
 	color: #fff;
 	font-family: 'Oxygen-Bold', sans-serif;
 }
@@ -121,6 +126,138 @@ body {
 	animation: blink 3s infinite;
 }
 
+#screen-container {
+    visibility: hidden;
+    font-family: 'Oxygen', sans-serif;
+    z-index: 99;
+}
+
+#screen {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    border-radius: 2.5rem;
+    background-color: #1b1b1f;
+    margin: calc(5vh - 5px) auto;
+    border: 5px solid #000;
+}
+
+dialog {
+    font-family: 'Oxygen', sans-serif;
+    background: var(--button-background);
+    color: var(--button-color);
+    border: none;
+    border-radius: 1rem;
+}
+
+dialog button {
+    background: var(--button-color) !important;
+    color: var(--button-background) !important;
+    border: none;
+    border-radius: 0.25rem;
+}
+
+dialog button:hover {
+    background: var(--button-hover) !important;
+    color: var(--button-color) !important;
+}
+
+.danger:hover {
+    border: 1px solid darkred !important;
+}
+
+.danger {
+    background: darkred !important;
+    color: #fff !important;
+}
+
+#screen svg {
+    stroke: #fff;
+}
+
+#screen img {
+    width: 100%;
+    height: 100%;
+    border-radius: 2.5rem;
+    border: none;
+}
+
+.button {
+    padding: unset;
+    border: none;
+}
+
+#next,
+#previous {
+    width: 2.6vw;
+}
+
+#previous {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1.3vw;
+}
+
+#next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 1.3vw;
+}
+
+#previous svg, #next svg {
+    width: 1.25vw;
+    height: 2.2vh;
+}
+
+#top-right-buttons {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 1.3vw;
+    top: 1.86vh;
+    gap: 1.86vh;
+    font-size: 1.15rem;
+}
+
+#center-column {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+    position: absolute;
+    bottom: 1.86vh;
+    width: calc(100%);
+}
+
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3.7vh;
+    width: 3.9vw;
+    border-radius: 20px;
+    background-color: var(--button-background);
+    color: var(--button-color);
+}
+
+.button:hover {
+    background-color: var(--button-hover);
+}
+
+.toast {
+    font-family: 'Oxygen', sans-serif;
+    position: absolute;
+    bottom: 10vh;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--button-background);
+    color: var(--button-color);
+    font-size: 1.15rem;
+}
+
 @keyframes blink {
 	0% {
 		opacity: 1;
@@ -133,4 +270,14 @@ body {
 	100% {
 		opacity: 1;
 	}
+}
+
+@keyframes slide-right {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
 }

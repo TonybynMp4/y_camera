@@ -14,7 +14,10 @@ shared_scripts {
 
 ui_page 'html/index.html'
 files {
-    'html/*',
+    'html/assets/*',
+    'html/index.html',
+    'html/style.css',
+    'html/main.js',
     'locales/*'
 }
 

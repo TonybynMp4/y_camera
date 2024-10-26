@@ -10,7 +10,8 @@
     },
     "error": {
         "takePicture": "Der opstod en fejl, prøv igen",
-        "edit": "Foto redigeret"
+        "edit": "Foto redigeret",
+        "cameraFull": "Kameraets hukommelse er fuld, slet venligst nogle billeder!"
     },
     "success": {
         "edit": "Der opstod en fejl under redigeringen",
