@@ -239,15 +239,22 @@ document.addEventListener('DOMContentLoaded', () => {
         if (Screen.Images.length === 0) return;
         if (Screen.Images[Screen.CurrentImage] === undefined) return;
 
-        fetch(`https://${GetParentResourceName()}/print`, {
+        fetch(`https://${GetParentResourceName()}/printPhoto`, {
             method: 'POST',
-            body: JSON.stringify({ url: Screen.Images[Screen.CurrentImage] }),
+            body: JSON.stringify(Screen.Images[Screen.CurrentImage]),
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then((success) => {
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        }).then(({success}) => {
             if (!success) return;
             toast('A copy of the photo was printed!');
+        }).catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
         });
     });
     document.getElementById('delete').addEventListener('click', async () => {
