@@ -48,45 +48,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const Photo = {
+        Image: document.getElementById('image'),
+        Title: document.getElementById('title'),
+        SubText: document.getElementById('subText'),
+        Container: document.getElementById('photo-container'),
+
         close: function (_) {
             if (cameraLoop) return;
             fetch(`https://${GetParentResourceName()}/closePhoto`, {
                 method: 'POST'
             });
-            this.reset();
+            Photo.reset();
         },
         toggle: function (data) {
             if (data.toggle) {
-                this.set(data);
-                document.onclick = this.close;
-                document.onkeydown = this.close;
+                Photo.set(data);
+                document.onclick = Photo.close;
+                document.onkeydown = Photo.close;
                 return;
             }
-            this.reset();
+            Photo.reset();
         },
         reset: function () {
-            const image = document.getElementById('image');
-            const title = document.getElementById('title');
-            const subText = document.getElementById('subText');
+            Photo.Image.src = null;
+            Photo.Title.textContent = null;
+            Photo.SubText.textContent = null;
 
-            image.src = null;
-            title.textContent = null;
-            subText.textContent = null;
-
-            const photo = document.getElementById('photo-container');
-            photo.style.visibility = 'hidden';
+            Photo.Container.style.visibility = 'hidden';
         },
         set: function (data) {
-            const image = document.getElementById('image');
-            const title = document.getElementById('title');
-            const subText = document.getElementById('subText');
+            Photo.Image.src = data.source;
+            Photo.Title.textContent = data.title || '';
+            Photo.SubText.textContent = data.subText || '';
 
-            image.src = data.source;
-            title.textContent = data.title || '';
-            subText.textContent = data.subText || '';
-
-            const photo = document.getElementById('photo-container');
-            photo.style.visibility = 'visible';
+            Photo.Container.style.visibility = 'visible';
         }
     }
 
