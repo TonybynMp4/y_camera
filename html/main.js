@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fetch(`https://${GetParentResourceName()}/copyUrl`, {
             method: 'POST',
-            body: JSON.stringify({ url: Screen.Images[Screen.CurrentImage] }),
+            body: JSON.stringify(Screen.Images[Screen.CurrentImage]),
             headers: {
                 'Content-Type': 'application/json'
             }
