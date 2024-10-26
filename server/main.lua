@@ -35,14 +35,12 @@ lib.callback.register('y_camera:server:takePicture', function(source)
         local cameraSlots = exports.ox_inventory:GetSlotsWithItem(source, 'camera')
         if not cameraSlots then return false end
 
-        for i in #cameraSlots do
+        for i = 1, #cameraSlots do
             local slot = cameraSlots[i]
             local photos = slot.metadata.photos or {}
+
             if #photos < config.maxCameraSlots then
-                if not slot.metadata.photos then slot.metadata.photos = {} end
-                slot.metadata.photos[#slot.metadata.photos + 1] = {
-                    url = imageData.url
-                }
+                photos[#photos + 1] = { url = imageData.url }
 
                 slot.metadata.photos = photos
                 exports.ox_inventory:SetMetadata(source, slot.slot, slot.metadata)
