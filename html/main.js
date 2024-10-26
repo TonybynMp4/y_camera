@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toggle: function (toggle, photos, cameraSlot) {
             if (toggle) {
                 this.Container.style.visibility = 'visible';
-                this.Images = photos;
+                this.Images = photos || [];
                 this.CameraSlot = cameraSlot;
                 this.changePhoto('set', 0);
                 return;
