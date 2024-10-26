@@ -24,6 +24,9 @@ A camera script for the Qbox Framework using [fivemanage](https://www.fivemanage
     weight = 1500,
     stack = false,
     close = true,
+    client = {
+        event = "y_camera:client:openCamera"
+    },
     buttons = {
         {
             label = 'View photos',

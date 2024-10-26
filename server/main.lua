@@ -8,10 +8,6 @@ local function showPhoto(source, data)
     TriggerClientEvent('y_camera:client:openPhoto', source, data)
 end
 
-exports.qbx_core:CreateUseableItem('camera', function(source)
-    TriggerClientEvent('y_camera:client:openCamera', source)
-end)
-
 exports.qbx_core:CreateUseableItem('photo', function(source, item)
     local Player = exports.qbx_core:GetPlayer(source)
     if not Player then return end
@@ -25,30 +21,26 @@ end)
 
 local function givePicture(source, imageData)
     if not source or source == -1 or source <= 0 then return end
-    exports.ox_inventory:AddItem(source, 'photo', 1, {source = imageData.url})
+    exports.ox_inventory:AddItem(source, 'photo', 1, { source = imageData.url })
 end
 
-lib.callback.register('y_camera:server:takePicture', function(source)
+lib.callback.register('y_camera:server:takePicture', function(source, cameraSlot)
     if not source or source == -1 or source <= 0 then return false end
-    local imageData = exports.fmsdk:takeServerImage(source)
-    if imageData then
-        local cameraSlots = exports.ox_inventory:GetSlotsWithItem(source, 'camera')
-        if not cameraSlots then return false end
+    local inventorySlot = exports.ox_inventory:GetSlot(source, cameraSlot)
+    if not inventorySlot then return false end
+    local photos = inventorySlot.metadata.photos or {}
 
-        for i = 1, #cameraSlots do
-            local slot = cameraSlots[i]
-            local photos = slot.metadata.photos or {}
+    if #photos < config.maxCameraSlots then
+        local imageData = exports.fmsdk:takeServerImage(source)
+        if not imageData then return false end
 
-            if #photos < config.maxCameraSlots then
-                photos[#photos + 1] = { url = imageData.url }
+        photos[#photos + 1] = { url = imageData.url }
 
-                slot.metadata.photos = photos
-                exports.ox_inventory:SetMetadata(source, slot.slot, slot.metadata)
-                return true
-            end
-        end
+        inventorySlot.metadata.photos = photos
+        exports.ox_inventory:SetMetadata(source, inventorySlot.slot, inventorySlot.metadata)
+        return true
     end
-    return false
+    return false, true
 end)
 
 lib.callback.register('y_camera:server:printPhoto', function(source, url)
@@ -57,7 +49,7 @@ lib.callback.register('y_camera:server:printPhoto', function(source, url)
     if not url or type(url) ~= "string" then return false end
     -- Only allow images from the fivemanage server (security goes brrrr i guess?)
     if string.sub(url, 1, 32) ~= 'https://r2.fivemanage.com/images' then return false end
-    givePicture(source, {url = url})
+    givePicture(source, { url = url })
 
     return false
 end)
@@ -106,7 +98,7 @@ RegisterNetEvent('y_camera:server:showPicture', function(players, data)
 
     for _, player in ipairs(players) do
         if player.id and player.id ~= -1 or player.id < 1 then
-            if #(player.coords - data.sourceCoords) >  20 then
+            if #(player.coords - data.sourceCoords) > 20 then
                 lib.print.warning(('Player: %s tried to show a photo to a player that is too far away'):format(source))
             else
                 showPhoto(player, sendData)

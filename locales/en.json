@@ -10,7 +10,8 @@
     },
     "error": {
         "takePicture": "You did not take a picture",
-        "edit": "Photo edited"
+        "edit": "Photo edited",
+        "cameraFull": "Camera memory is full, please delete some photos!"
     },
     "success": {
         "edit": "Failed to edit photo",

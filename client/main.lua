@@ -15,24 +15,6 @@ local function helpText()
     DisplayHelpTextFromStringLabel(0, false, true, 1)
 end
 
-local function takePicture()
-    SendNUIMessage({
-        message = 'camera',
-        toggle = false
-    })
-    Wait(200)
-    lib.callback('y_camera:server:takePicture', false, function(tookPic)
-        if not tookPic then
-            exports.qbx_core:Notify(locale('error.takePicture'), 'error')
-        end
-    end)
-    Wait(200)
-    SendNUIMessage({
-        message = 'camera',
-        toggle = true
-    })
-end
-
 local function handleZoom()
     if IsControlJustPressed(0, 241) then
         fov = math.max(fov - ZOOM_SPEED, FOV_MIN)
@@ -68,6 +50,31 @@ local function resetCamera()
     fov = DEFAULT_FOV
 end
 
+local function takePicture(cameraSlot)
+    SendNUIMessage({
+        message = 'camera',
+        toggle = false
+    })
+    Wait(200)
+    lib.callback('y_camera:server:takePicture', false, function(tookPic, full)
+        if not tookPic then
+            if full then
+                resetCamera()
+                return exports.qbx_core:Notify(locale('error.cameraFull'), 'error')
+            end
+
+            exports.qbx_core:Notify(locale('error.takePicture'), 'error')
+        end
+    end, cameraSlot)
+    Wait(200)
+    if inCam then
+        SendNUIMessage({
+            message = 'camera',
+            toggle = true
+        })
+    end
+end
+
 local function handleCameraControls()
     local multiplier = fov / 50
     if not cache.vehicle then
@@ -88,7 +95,7 @@ local function disableControls()
     DisableControlAction(0, 44, true)
 end
 
-local function openCamera()
+local function openCamera(cameraSlot)
     SetNuiFocus(false, false)
     DisplayHud(false)
     DisplayRadar(false)
@@ -150,7 +157,7 @@ local function openCamera()
                     audioRef = 'Phone_Soundset_Franklin',
                     source = cameraProp
                 })
-                takePicture()
+                takePicture(cameraSlot)
             elseif IsControlJustPressed(1, 194) then
                 resetCamera()
             end
@@ -169,9 +176,9 @@ lib.onCache('vehicle', function(value)
     end
 end)
 
-RegisterNetEvent('y_camera:client:openCamera', function()
+RegisterNetEvent('y_camera:client:openCamera', function(data)
     if inCam then return end
-    openCamera()
+    openCamera(data.slot)
 end)
 
 RegisterNetEvent('y_camera:client:openPhoto', function(data)
