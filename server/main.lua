@@ -76,13 +76,10 @@ end)
 
 lib.callback.register('y_camera:server:deletePhotoFromCamera', function(source, cameraSlot, photoIndex, url)
     if not source or source == -1 or source <= 0 then return false end
-    local items = exports.ox_inventory:GetPlayerItems(source)
-    local slotData = items[cameraSlot]
-
+    local slotData = exports.ox_inventory:GetSlot(source, cameraSlot)
     if not slotData or not slotData.metadata or not slotData.metadata.photos then return false end
 
-    local photoData = slotData.metadata.photos[photoIndex]
-    if not photoData or photoData.url ~= url then return false end
+    if not slotData.metadata.photos[photoIndex] or slotData.metadata.photos[photoIndex].url ~= url then return false end
 
     slotData.metadata.photos[photoIndex] = nil
 
