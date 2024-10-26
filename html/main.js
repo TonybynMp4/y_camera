@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Photo.toggle(event.data);
                 break;
             case 'toggleScreen':
-                Screen.toggle(event.data.toggle, event.data.photos);
+                Screen.toggle(event.data.toggle, event.data.photos, event.data.cameraSlot);
                 break;
             default:
                 console.error('Unknown message received', event.data);
