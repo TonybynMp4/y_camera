@@ -4,7 +4,7 @@ game 'gta5'
 author 'Tonybyn_Mp4'
 description 'Camera script for the Qbox Framework'
 repository 'https://github.com/TonybynMp4/y_camera'
-version '1.0.4'
+version '1.1.0'
 
 ox_lib 'locale'
 shared_scripts {
