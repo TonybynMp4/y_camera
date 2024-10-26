@@ -217,6 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('next').addEventListener('click', () => Screen.changePhoto('next'));
     document.getElementById('previous').addEventListener('click', () => Screen.changePhoto('previous'));
     document.getElementById('copyurl').addEventListener('click', () => {
+        if (Screen.Images.length === 0 || !Screen.Images[Screen.CurrentImage]?.url) return;
+
         fetch(`https://${GetParentResourceName()}/copyUrl`, {
             method: 'POST',
             body: JSON.stringify({ url: Screen.Images[Screen.CurrentImage] }),
