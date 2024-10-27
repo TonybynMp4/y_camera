@@ -97,9 +97,6 @@ end
 
 local function openCamera(cameraSlot)
     SetNuiFocus(false, false)
-    DisplayHud(false)
-    DisplayRadar(false)
-    TriggerEvent("qbx_hud:client:hideHud")
     inCam = true
     LocalPlayer.state:set('invBusy', true)
 
@@ -129,6 +126,14 @@ local function openCamera(cameraSlot)
         message = 'camera',
         toggle = true
     })
+
+    DisplayHud(false)
+    DisplayRadar(false)
+
+    -- Delay to prevent the inventory closing from cancelling by showing the hud
+    SetTimeout(250, function()
+        TriggerEvent("qbx_hud:client:hideHud")
+    end)
 
     CreateThread(function()
         while inCam do
