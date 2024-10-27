@@ -199,6 +199,19 @@ RegisterNetEvent('y_camera:client:openPhoto', function(data)
     SetNuiFocus(true, true)
 end)
 
+RegisterNUICallback('getLocales', function(_, cb)
+    cb({
+        locales = {
+            copied = locale('ui.copied'),
+            printed = locale('ui.printed'),
+            deleted = locale('ui.deleted'),
+            deleteConfirmation = locale('ui.deleteConfirmation'),
+            deleteConfirm = locale('ui.deleteConfirm'),
+            cancel = locale('ui.cancel')
+        }
+    })
+end)
+
 RegisterNUICallback('closePhoto', function(_, cb)
     SetNuiFocus(false, false)
     SendNUIMessage({

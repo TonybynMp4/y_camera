@@ -2,6 +2,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let cameraLoop = false;
     let count = 0;
     let intervalId = null;
+    let locales = {};
+    fetch(`https://${GetParentResourceName()}/getLocales`, {
+        method: 'POST',
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    }).then(({locales: fetchedLocales}) => {
+        locales = fetchedLocales;
+    }).catch((error) => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+
 
     function toast(message) {
         const toast = document.createElement('div');
@@ -22,11 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const modalContent = `
                 <h3 style="text-align: center; margin-inline: 2rem;">
-                    Are you sure you want to delete this photo?
+                    ${locales.deleteConfirmation}
                 </h3>
                 <div style="display: flex; justify-content: center; gap: 3rem; margin-top:2rem;">
-                    <button class="button danger" id="confirm">Delete</button>
-                    <button class="button" id="cancel">Cancel</button>
+                    <button class="button danger" id="confirm">${locales.deleteConfirm}</button>
+                    <button class="button" id="cancel">${locales.cancel}</button>
                 </div>
           `;
 
@@ -233,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        toast('URL copied to clipboard');
+        toast(locales.copied);
     });
     document.getElementById('printPhoto').addEventListener('click', () => {
         if (Screen.Images.length === 0) return;
@@ -252,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         }).then(({success}) => {
             if (!success) return;
-            toast('A copy of the photo was printed!');
+            toast(locales.printed);
         }).catch((error) => {
             console.error('There was a problem with the fetch operation:', error);
         });
@@ -282,7 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!success) return;
 
             Screen.Images = Screen.Images.filter((_, index) => index !== Screen.CurrentImage);
-            toast('Photo deleted!');
+            toast(locales.deleted);
 
             Screen.changePhoto('set', Math.max(0, Screen.CurrentImage - 1));
         }).catch((error) => {

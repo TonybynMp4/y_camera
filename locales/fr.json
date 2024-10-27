@@ -16,5 +16,13 @@
     "success": {
         "edit": "Photo modifiée",
         "copied": "URL copiée"
+    },
+    "ui": {
+        "copied": "URL copiée",
+        "printed": "Une copie de la photo a été imprimée!",
+        "deleted": "Photo supprimée!",
+        "deleteConfirmation": "Voulez-vous vraiment supprimer cette photo?",
+        "deleteConfirm": "Supprimer",
+        "cancel": "Annuler"
     }
 }
