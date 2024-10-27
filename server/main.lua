@@ -72,8 +72,7 @@ lib.callback.register('y_camera:server:deletePhotoFromCamera', function(source, 
     if not slotData or not slotData.metadata or not slotData.metadata.photos then return false end
 
     if not slotData.metadata.photos[photoIndex] or slotData.metadata.photos[photoIndex].url ~= url then return false end
-
-    slotData.metadata.photos[photoIndex] = nil
+    table.remove(slotData.metadata.photos, photoIndex)
 
     exports.ox_inventory:SetMetadata(source, cameraSlot, slotData.metadata)
 
