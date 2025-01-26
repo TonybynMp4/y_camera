@@ -11,7 +11,7 @@ local heading
 
 local function helpText()
     SetTextComponentFormat("STRING")
-    AddTextComponentString(locale('help.exit')..': ~INPUT_CELLPHONE_CANCEL~\n'..locale('help.take')..': ~INPUT_CELLPHONE_SELECT~')
+    AddTextComponentString(locale('help.exit') .. ': ~INPUT_CELLPHONE_CANCEL~\n' .. locale('help.take') .. ': ~INPUT_CELLPHONE_SELECT~')
     DisplayHelpTextFromStringLabel(0, false, true, 1)
 end
 
@@ -55,7 +55,9 @@ local function takePicture(cameraSlot)
         message = 'camera',
         toggle = false
     })
+
     Wait(200)
+
     lib.callback('y_camera:server:takePicture', false, function(tookPic, full)
         if not tookPic then
             if full then
@@ -66,7 +68,9 @@ local function takePicture(cameraSlot)
             exports.qbx_core:Notify(locale('error.takePicture'), 'error')
         end
     end, cameraSlot)
+
     Wait(200)
+
     if inCam then
         SendNUIMessage({
             message = 'camera',
@@ -91,6 +95,7 @@ end
 
 local function disableControls()
     DisablePlayerFiring(cache.playerId, true)
+    DisableControlAction(0, 24, true)
     DisableControlAction(0, 25, true)
     DisableControlAction(0, 44, true)
 end
@@ -99,6 +104,7 @@ local function openCamera(cameraSlot)
     SetNuiFocus(false, false)
     inCam = true
     LocalPlayer.state:set('invBusy', true)
+    TriggerEvent('ox_inventory:disarm', true)
 
     SetTimecycleModifier("default")
 
@@ -137,7 +143,7 @@ local function openCamera(cameraSlot)
 
     CreateThread(function()
         while inCam do
-            local zoom = math.floor(((1/fov) * DEFAULT_FOV) * 100) / 100
+            local zoom = math.floor(((1 / fov) * DEFAULT_FOV) * 100) / 100
             SendNUIMessage({
                 message = 'updateZoom',
                 zoom = qbx.math.round(zoom, 2)
@@ -253,8 +259,8 @@ local function editPicture(slot)
     if not slotData then return end
 
     local input = lib.inputDialog(locale('input.title'), {
-        {type = 'input', label = locale('input.photoTitle'), required = false, min = 0, max = 32, default = slotData.metadata.title or ''},
-        {type = 'input', label = locale('input.description'), required = false, min = 0, max = 128, default = slotData.metadata.description or ''}
+        { type = 'input', label = locale('input.photoTitle'),  required = false, min = 0, max = 32,  default = slotData.metadata.title or '' },
+        { type = 'input', label = locale('input.description'), required = false, min = 0, max = 128, default = slotData.metadata.description or '' }
     })
 
     if not input then return end
@@ -309,3 +315,11 @@ local function showScreen(slot)
     SetNuiFocus(true, true)
 end
 exports('ShowScreen', showScreen)
+
+AddEventHandler('onResourceStop', function(resource)
+    if resource == GetCurrentResourceName() then
+        if inCam then
+            resetCamera()
+        end
+    end
+end)
