@@ -5,6 +5,17 @@ A camera script for the Qbox Framework using [fivemanage](https://www.fivemanage
 <img src="https://github.com/TonybynMp4/y_camera/assets/97451137/2340c391-c58c-4ec4-ae6b-95ce210a6bd2" width="49.6%"></img>
 ![image](https://github.com/user-attachments/assets/fd515e03-d765-4f2d-bcf2-e4a7a50ad4ba)
 
+## Know issue
+Due to FiveM weirdness, users of NVE may encounter a problem where all the photos taken through scripts in game ends up being either a black or blue screen.
+
+This issue is not related to this script and occurs regardless of the "*screenshoting*" resource used (screenshot-basic, fmsdk, ScreenCapture, etc.).
+
+This can however pretty easily be fixed this way:
+- Open ReShade,
+- Click addons
+- Disable `Reshade effect shader toggler` at the bottom
+- Restart the game to apply the change
+
 ## Dependencies
 
 - [qbx_core](https://github.com/qbox-project/qbx_core/releases/latest)
