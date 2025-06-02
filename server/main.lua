@@ -31,8 +31,11 @@ lib.callback.register('y_camera:server:takePicture', function(source, cameraSlot
     local photos = inventorySlot.metadata.photos or {}
 
     if #photos < config.maxCameraSlots then
-        local imageData = exports.fmsdk:takeServerImage(source)
-        if not imageData then return false end
+        local imageData = exports.fmsdk:takeServerImage(source).data
+        if not imageData then
+            lib.print.error(('Player: %s tried to take a photo but the image data is nil'):format(source))
+            return false
+        end
 
         photos[#photos + 1] = { url = imageData.url }
 
