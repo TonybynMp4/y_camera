@@ -51,7 +51,10 @@ lib.callback.register('y_camera:server:printPhoto', function(source, url)
 
     if not url or type(url) ~= "string" then return false end
     -- Only allow images from the fivemanage server (security goes brrrr i guess?)
-    if string.sub(url, 1, 32) ~= 'https://r2.fivemanage.com/images' then return false end
+    if string.sub(url, 1, 26) ~= 'https://r2.fivemanage.com/' then
+        lib.print.error(('Tried to print a photo from a URL that isn\'t allowed: %s'):format(url))
+        return false
+    end
     givePicture(source, { url = url })
 
     return false
